@@ -1,0 +1,61 @@
+/*
+    Author: Krisna Gusti
+*/
+
+*{
+    color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+body, html{
+    height: 100%;
+    margin: 0;
+    background-color: rgb(100, 200, 255);
+}
+
+h1{
+    width: 10;
+    margin: 0;
+    text-align: center;
+    font-size: 4em;
+}
+
+.sidenav{
+    position: fixed;
+    background-color: rgb(94, 89, 89);
+    height: 100%;
+    width: 120px;
+    padding-top: 2em;
+}
+
+.sidenav a{
+    color: white;
+    display: block;
+    padding: 5px;
+    text-align: center;
+}
+
+.sidenav p{
+    text-align: center;
+    font-size: 1.5em;
+    color:white;
+}
+
+#bg{
+    margin-left: 120px;
+}
+
+.panel{
+    width: 40%;
+    height: auto;
+    margin: auto;
+    margin-bottom: 3em;
+    padding: 0.5em;
+    background-color: antiquewhite;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.google-map{
+    background-color: white;
+}
