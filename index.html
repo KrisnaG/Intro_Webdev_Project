@@ -18,11 +18,27 @@
             <a href="#">About</a>
         </div>
         <div id="bg">
-            <h1>Title</h1>
+            <h1>Queensland Animal Species</h1>
             <div class="panel">
-                <p>Select from the drop down list</p>
-                <select name="species" id="species-list"></select>
-                <input type="button" value="Find" class="find-button" id="find">
+                <div class="">
+                    <p>Select from the drop down list</p>
+                </div>
+                <div class="selection">
+                    <p>Class:</p>
+                    <select name="class" id="class-list"></select>
+                </div>
+                <div class="selection">
+                    <p>Family:</p>
+                    <select name="family" id="family-list"></select>
+                </div>
+                <div class="selection">
+                    <p>Species:</p>
+                    <select name="species" id="species-list"></select>
+                </div>
+                <div class="selection">
+                    <input type="button" value="Find" class="find-button" id="find">
+                    <p id="find-error" hidden=true>Please select a species</p>
+                </div>
             </div>
             <div class="panel">
                 <img src="" alt="" id="species-image">
