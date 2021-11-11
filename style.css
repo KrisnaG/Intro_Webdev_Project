@@ -46,7 +46,7 @@ h1{
 }
 
 .panel{
-    width: 40%;
+    width: 30%;
     height: auto;
     margin: auto;
     margin-bottom: 3em;
@@ -54,6 +54,30 @@ h1{
     background-color: antiquewhite;
     border-radius: 10px;
     text-align: center;
+}
+
+.panel p{
+    margin: 0em;
+}
+
+#find{
+    margin: 30px;
+    padding: 10px;
+    font-size: 24px;
+}
+
+#species-information{
+    text-align: right;
+    margin: 0 auto;
+
+}
+
+#species-information td{
+    padding-left: 2em;
+}
+
+#image-container{
+    width: 60%;
 }
 
 .google-map{

@@ -1,11 +1,10 @@
 /* 
+    Website about Queensland Animal Species
     Author: Krisna Gusti
+    API URL: https://www.data.qld.gov.au/dataset/qld-wildlife-data-api
 */
 
 // Variables
-
-//https://www.data.qld.gov.au/dataset/qld-wildlife-data-api
-
 const CLASS_LIST = document.getElementById("class-list");
 const FAMILY_LIST = document.getElementById("family-list");
 const SPECIES_LIST = document.getElementById("species-list");
@@ -14,10 +13,13 @@ const SPECIES_LIST = document.getElementById("species-list");
 const CLASS_URL = 'https://apps.des.qld.gov.au/species/?op=getclassnames&kingdom=animals';
 const FAMILY_URL = 'https://apps.des.qld.gov.au/species/?op=getfamilynames&kingdom=animals&class=';
 const SPECIES_URL = 'https://apps.des.qld.gov.au/species/?op=getspecies&kingdom=animals&family=';
+const ID_URL = 'https://apps.des.qld.gov.au/species/?op=getspeciesbyid&taxonid=';
 const IMAGE_URL = '';
 
-var class_list = {};
-var family_list = {};
+// key value pairs
+var className = {};
+var familyName = {};
+var speciesName = {}
 
 // when page first loads 
 window.addEventListener("load", updateClassList);
@@ -42,84 +44,127 @@ async function fetchInformation(url) {
     }
 }
 
-// 
+// Create new element for drop down list
 function createOption(text) {
     let option = document.createElement("option");
     option.textContent = text;
     return option;
 }
 
-// Add list of species to dropdown list
+// Populate the species class list
 function updateClassList() {
     fetchInformation(CLASS_URL).then(
         function(data) {
-            //
+            // 
             for(element of data.Class) {
-                let selected_class = element.ClassCommonName;
-                // append species to list
-                CLASS_LIST.appendChild(createOption(selected_class));
-
+                let selectedClass = element.ClassCommonName;
+                // append class name to list
+                CLASS_LIST.appendChild(createOption(selectedClass));
                 // 
-                class_list[element.ClassCommonName] = element.ClassName;
+                className[element.ClassCommonName] = element.ClassName;
             }
+            document.getElementById("class-list").value = "";
         }
     );
 }
 
-// 
+// Populate the species family list 
 function updateFamilyList() {
-    fetchInformation(FAMILY_URL + class_list[document.getElementById("class-list").value]).then(
+    fetchInformation(FAMILY_URL + className[document.getElementById("class-list").value]).then(
         function(data) {
             // clear family list
             FAMILY_LIST.innerHTML = "";
-
+            SPECIES_LIST.innerHTML = "";
             //
             for(element of data.Family) {
-                let selected_family = element.FamilyCommonName;
-                // append species to list
-                FAMILY_LIST.appendChild(createOption(selected_family));
+                let selectedFamily = element.FamilyCommonName;
+                // append family name to list
+                FAMILY_LIST.appendChild(createOption(selectedFamily));
                 // store scientific family name
-                family_list[element.FamilyCommonName] = element.FamilyName;
+                familyName[element.FamilyCommonName] = element.FamilyName;
             }
+            document.getElementById("family-list").value = "";
         }
     );
 }
 
-// 
+// Populate the species name list
 function updateSpeciesList() {
-    fetchInformation(SPECIES_URL + family_list[document.getElementById("family-list").value]).then(
+    fetchInformation(SPECIES_URL + familyName[document.getElementById("family-list").value]).then(
         function(data) {
             // clear species list
             SPECIES_LIST.innerHTML = "";
-
-            //
+            // 
             for(element of data.Species) {
-                let selected_species = element.AcceptedCommonName;
-                if(!selected_species) {
-                    selected_species = element.ScientificName;
+                //
+                let selectedSpecies = element.AcceptedCommonName;
+                if(!selectedSpecies) {
+                    selectedSpecies = element.ScientificName;
                 }
-                // append species to list
-                SPECIES_LIST.appendChild(createOption(selected_species));
+                // append species name to list
+                SPECIES_LIST.appendChild(createOption(selectedSpecies));
+                speciesName[selectedSpecies] = element.TaxonID;
             }
         }
     );
 }
 
-// 
+// when the find button is clicked
 function findSpecies() {
-    if(document.getElementById("species-list").value) {
+    // reveal table
+    document.getElementById("species-table").hidden = false;
+    let id = speciesName[document.getElementById("species-list").value];
+    // if id of species exists
+    if(id) {
+        // hide error message if it was displayed
         document.getElementById("find-error").hidden = true;
-        
+        // get info
+        fetchInformation(ID_URL + id).then(
+            function(data) {
+                getSpeciesImage(data.Species);
+                getSpeciesInformation(data.Species);
+            }
+        );
     } else {
         document.getElementById("find-error").hidden = false;
     }
 }
 
-function getSpeciesImage(id) {
-    // get species by id
-    fetchInformation(SPECIES_URL+id).then(
-        function(data) {
-            document.getElementById("species-image").src = (IMAGE_URL + data.imageIdentifier);
+function getSpeciesImage(data) {
+    // remove previous image
+    document.getElementById("image-container").innerHTML = "<img src=\"\" alt=\"\" id=\"species-image\">"
+    document.getElementById("image-container").hidden = false;
+    // get image
+    try { 
+        // if multiple images exist      
+        if(!Array.isArray(data.Image)) {     
+            document.getElementById("species-image").src = data.Image.URL;
+        } else {
+            let imageContainer = document.getElementById("image-container");
+            for(let i = 0; i < data.Image.length; i++) {
+                imageContainer.innerHTML = imageContainer.innerHTML + "<img src=\"" + data.Image[i].URL + "\"/><br/>";
+            } 
         }
-    );
+    // unable to get an image
+    } catch(TypeError) {
+        document.getElementById("image-container").innerHTML = "No Image Available"
+    }
+}
+
+function getSpeciesInformation(data) {
+    // If no accepted name exists
+    if(data.AcceptedCommonName == undefined) {
+        document.getElementById("name-info").innerHTML = data.ScientificName;
+    } else {
+        document.getElementById("name-info").innerHTML = data.AcceptedCommonName;
+    }
+    // if no species environment exists
+    if(data.SpeciesEnvironment == undefined) {
+        document.getElementById("environment-info").innerHTML = "Not available"
+    } else {
+        document.getElementById("environment-info").innerHTML = data.SpeciesEnvironment;        
+    }
+    // these elements are always provided with data
+    document.getElementById("sname-info").innerHTML = data.ScientificName;
+    document.getElementById("pest-info").innerHTML = data.PestStatus;
 }

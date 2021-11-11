@@ -19,6 +19,8 @@
         </div>
         <div id="bg">
             <h1>Queensland Animal Species</h1>
+
+            <!--SELECTION BOXES-->
             <div class="panel">
                 <div class="">
                     <p>Select from the drop down list</p>
@@ -40,15 +42,38 @@
                     <p id="find-error" hidden=true>Please select a species</p>
                 </div>
             </div>
-            <div class="panel">
+
+            <!--SPECIES INFORMATION-->
+            <div class="panel" id="species-table" hidden=true>
+                <table id="species-information">
+                    <tr>
+                        <th>Name:</th>
+                        <td id="name-info"></td>
+                    </tr>
+                    <tr>
+                        <th>Scientific Name:</th>
+                        <td id="sname-info"></td>
+                    </tr>
+                    <tr>
+                        <th>Environment:</th>
+                        <td id="environment-info"></td>
+                    </tr>
+                    <tr>
+                        <th>Pest Status:</th>
+                        <td id="pest-info"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel" id="image-container" hidden=true>
                 <img src="" alt="" id="species-image">
             </div>
+
         </div>
         <div id="google-map">
 
         </div>
         <div id="about">
-            
+            <p></p>
         </div>
     </body>
 </html>
