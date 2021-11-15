@@ -29,7 +29,7 @@ document.getElementById("class-list").addEventListener("change", updateFamilyLis
 document.getElementById("family-list").addEventListener("change", updateSpeciesList);
 
 // when find is clicked
-document.getElementById("find").addEventListener("click", findSpecies);
+document.getElementById("find-button").addEventListener("click", findSpecies);
 
 // Retrieve information from API
 async function fetchInformation(url) {
@@ -111,13 +111,13 @@ function updateSpeciesList() {
 
 // when the find button is clicked
 function findSpecies() {
-    // reveal table
-    document.getElementById("species-table").hidden = false;
     let id = speciesName[document.getElementById("species-list").value];
     // if id of species exists
     if(id) {
         // hide error message if it was displayed
         document.getElementById("find-error").hidden = true;
+        // reveal table
+        document.getElementById("species-table").hidden = false;
         // get info
         fetchInformation(ID_URL + id).then(
             function(data) {
@@ -158,13 +158,24 @@ function getSpeciesInformation(data) {
     } else {
         document.getElementById("name-info").innerHTML = data.AcceptedCommonName;
     }
-    // if no species environment exists
-    if(data.SpeciesEnvironment == undefined) {
-        document.getElementById("environment-info").innerHTML = "Not available"
+    // If alternate names exists
+    if(data.AlternateCommonName == undefined) {
+        document.getElementById("common-info").innerHTML = "Not Available"
     } else {
-        document.getElementById("environment-info").innerHTML = data.SpeciesEnvironment;        
+        // 
+        if(!Array.isArray(data.AlternateCommonName)) {
+            document.getElementById("common-info").innerHTML = data.AlternateCommonName;
+        } else {
+            let names = data.AlternateCommonName[0];
+            for(let i = 1; i < data.AlternateCommonName.length; i++) {
+                names += ", " + data.AlternateCommonName[i];
+            }
+            document.getElementById("common-info").innerHTML = names;
+        }
     }
     // these elements are always provided with data
     document.getElementById("sname-info").innerHTML = data.ScientificName;
+    document.getElementById("family-info").innerHTML = data.FamilyCommonName;
+    document.getElementById("sfamily-info").innerHTML = data.FamilyName;
     document.getElementById("pest-info").innerHTML = data.PestStatus;
 }

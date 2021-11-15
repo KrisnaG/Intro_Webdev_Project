@@ -1,6 +1,6 @@
 <!--
     Author: Krisna Gusti
-    Website about Australian Species
+    Website about Queensland Australian Animal Species
 -->
 
 <!DOCTYPE html>
@@ -12,18 +12,17 @@
     </head>
     <body>
         <div class="sidenav">
-            <p>Nav</p>
-            <a href="#"></a>
-            <a href="#">Google Map</a>
-            <a href="#">About</a>
+            <p>Navbar</p>
+            <a href="#find">Find</a>
+            <a href="#google-map">Google Map</a>
+            <a href="#about">About</a>
         </div>
         <div id="bg">
             <h1>Queensland Animal Species</h1>
-
             <!--SELECTION BOXES-->
-            <div class="panel">
-                <div class="">
-                    <p>Select from the drop down list</p>
+            <div class="panel" id="find">
+                <div>
+                    <p>Select a Queensland animal species from the drop down list:</p>
                 </div>
                 <div class="selection">
                     <p>Class:</p>
@@ -38,11 +37,11 @@
                     <select name="species" id="species-list"></select>
                 </div>
                 <div class="selection">
-                    <input type="button" value="Find" class="find-button" id="find">
-                    <p id="find-error" hidden=true>Please select a species</p>
+                    <input type="button" value="FIND" id="find-button">
+                    <p id="find-error" hidden=true><b>Please select a species!</b></p>
+                    <p style="font-size:12px;"><i>*Note. Not all species have images and/or species information.</i></p>
                 </div>
             </div>
-
             <!--SPECIES INFORMATION-->
             <div class="panel" id="species-table" hidden=true>
                 <table id="species-information">
@@ -55,8 +54,16 @@
                         <td id="sname-info"></td>
                     </tr>
                     <tr>
-                        <th>Environment:</th>
-                        <td id="environment-info"></td>
+                        <th>Family Name:</th>
+                        <td id="family-info"></td>
+                    </tr>
+                    <tr>
+                        <th>Scientific Family Name:</th>
+                        <td id="sfamily-info"></td>
+                    </tr>
+                    <tr>
+                        <th>Alternate Names:</th>
+                        <td id="common-info"></td>
                     </tr>
                     <tr>
                         <th>Pest Status:</th>
@@ -67,14 +74,26 @@
             <div class="panel" id="image-container" hidden=true>
                 <img src="" alt="" id="species-image">
             </div>
-
+            <!--GOOGLE MAPS-->
+            <div class=panel id="google-map">
+                <h2><u>MAPS</u></h2>
+            </div>
+            <!--ABOUT-->
+            <div class=panel id="about">
+                <h2><u>ABOUT</u></h2>
+                <p>
+                    By selecting a particular Queensland animal species by class and family, information is provided
+                    about the species scientific names, alternate names, pest information and images. Note that
+                    the information is sourced externally, therefore, not all species listed are provided with 
+                    information and/or images.
+                    <br><br>
+                    All data was provided by the Queensland government from its WildNet database, which has been 
+                    approved for public use. More information on the WildNet database can be found 
+                    <a href=https://www.qld.gov.au/environment/plants-animals/species-information/wildnet>here</a>.
+                </p>
+            </div>
         </div>
-        <div id="google-map">
-
-        </div>
-        <div id="about">
-            <p></p>
-        </div>
+        <p style="margin-left:150px;"><i>Author: Krisna Gusti</i></p>
     </body>
 </html>
 <script src="australianSpecies.js"></script>
