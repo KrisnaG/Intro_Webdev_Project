@@ -90,9 +90,11 @@ h2{
 }
 
 #about p{
-
     text-align: justify;
 }
 
-#google-map{
+#map{
+    position: relative;
+    width: 550px;
+    height: 400px;
 }

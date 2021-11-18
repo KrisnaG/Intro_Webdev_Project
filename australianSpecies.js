@@ -14,6 +14,7 @@ const CLASS_URL = 'https://apps.des.qld.gov.au/species/?op=getclassnames&kingdom
 const FAMILY_URL = 'https://apps.des.qld.gov.au/species/?op=getfamilynames&kingdom=animals&class=';
 const SPECIES_URL = 'https://apps.des.qld.gov.au/species/?op=getspecies&kingdom=animals&family=';
 const ID_URL = 'https://apps.des.qld.gov.au/species/?op=getspeciesbyid&taxonid=';
+const SURVEY_URL = 'https://apps.des.qld.gov.au/species/?op=getsurveysbyspecies&&taxonid=';
 const IMAGE_URL = '';
 
 // key value pairs
@@ -123,6 +124,7 @@ function findSpecies() {
             function(data) {
                 getSpeciesImage(data.Species);
                 getSpeciesInformation(data.Species);
+                pinMap(id);
             }
         );
     } else {
@@ -178,4 +180,23 @@ function getSpeciesInformation(data) {
     document.getElementById("family-info").innerHTML = data.FamilyCommonName;
     document.getElementById("sfamily-info").innerHTML = data.FamilyName;
     document.getElementById("pest-info").innerHTML = data.PestStatus;
+}
+
+function getMap() {
+    var map = new Microsoft.Maps.Map('#map', {
+        credentials: 'AqKDsL6GDv9NorZbPm-i7lwPtfY-DF2Pwdv4mvXBKvPmxJ85KpeQZ5DXYAi_OY1R',
+        center: new Microsoft.Maps.Location(-22.797874359286126, 144.3006533179762),
+        mapTypeId: Microsoft.Maps.MapTypeId.aerial,
+        zoom: 4.8
+    });
+
+    //Add your post map load code here.
+}
+
+async function pinMap(id) {
+    fetchInformation(SURVEY_URL + id).then(
+        function(data) {
+            console.log(data.features)
+        }
+    )
 }
