@@ -2,9 +2,10 @@
     Website about Queensland Animal Species
     Author: Krisna Gusti
     API URL: https://www.data.qld.gov.au/dataset/qld-wildlife-data-api
+    BING MAP URL: https://docs.microsoft.com/en-us/bingmaps
 */
 
-// Variables
+// variables
 const CLASS_LIST = document.getElementById("class-list");
 const FAMILY_LIST = document.getElementById("family-list");
 const SPECIES_LIST = document.getElementById("species-list");
@@ -32,7 +33,7 @@ document.getElementById("family-list").addEventListener("change", updateSpeciesL
 // when find is clicked
 document.getElementById("find-button").addEventListener("click", findSpecies);
 
-// Retrieve information from API
+// Retrieve information from a url
 async function fetchInformation(url) {
     try {
         let fetched = await fetch(url);
@@ -45,23 +46,23 @@ async function fetchInformation(url) {
     }
 }
 
-// Create new element for drop down list
+// create new element for drop down list
 function createOption(text) {
     let option = document.createElement("option");
     option.textContent = text;
     return option;
 }
 
-// Populate the species class list
+// populate the species class list
 function updateClassList() {
     fetchInformation(CLASS_URL).then(
         function(data) {
-            // 
+            // get all class names
             for(element of data.Class) {
                 let selectedClass = element.ClassCommonName;
                 // append class name to list
                 CLASS_LIST.appendChild(createOption(selectedClass));
-                // 
+                // store scientific names
                 className[element.ClassCommonName] = element.ClassName;
             }
             document.getElementById("class-list").value = "";
@@ -76,12 +77,12 @@ function updateFamilyList() {
             // clear family list
             FAMILY_LIST.innerHTML = "";
             SPECIES_LIST.innerHTML = "";
-            //
+            // get all family names
             for(element of data.Family) {
                 let selectedFamily = element.FamilyCommonName;
                 // append family name to list
                 FAMILY_LIST.appendChild(createOption(selectedFamily));
-                // store scientific family name
+                // store scientific family names
                 familyName[element.FamilyCommonName] = element.FamilyName;
             }
             document.getElementById("family-list").value = "";
@@ -95,10 +96,10 @@ function updateSpeciesList() {
         function(data) {
             // clear species list
             SPECIES_LIST.innerHTML = "";
-            // 
+            // get all species names
             for(element of data.Species) {
-                //
                 let selectedSpecies = element.AcceptedCommonName;
+                // if no accepted common name exists
                 if(!selectedSpecies) {
                     selectedSpecies = element.ScientificName;
                 }
@@ -132,6 +133,7 @@ function findSpecies() {
     }
 }
 
+// retrieve image from api
 function getSpeciesImage(data) {
     // remove previous image
     document.getElementById("image-container").innerHTML = "<img src=\"\" alt=\"\" id=\"species-image\">"
@@ -153,7 +155,7 @@ function getSpeciesImage(data) {
     }
 }
 
-// 
+// get all information about selected species
 function getSpeciesInformation(data) {
     // If accepted name does not exists
     if(data.AcceptedCommonName == undefined) {
