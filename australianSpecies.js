@@ -182,6 +182,7 @@ function getSpeciesInformation(data) {
     document.getElementById("pest-info").innerHTML = data.PestStatus;
 }
 
+// 
 function getMap() {
     var map = new Microsoft.Maps.Map('#map', {
         credentials: 'AqKDsL6GDv9NorZbPm-i7lwPtfY-DF2Pwdv4mvXBKvPmxJ85KpeQZ5DXYAi_OY1R',
@@ -190,13 +191,21 @@ function getMap() {
         zoom: 4.8
     });
 
-    //Add your post map load code here.
+    return map;
 }
 
+// 
 async function pinMap(id) {
     fetchInformation(SURVEY_URL + id).then(
         function(data) {
-            console.log(data.features)
+            var map = getMap();
+
+            // add pins
+            for(position of data.features) {
+                var loc = new Microsoft.Maps.Location(position.geometry.coordinates[1], position.geometry.coordinates[0]);
+                var pin = new Microsoft.Maps.Pushpin(loc);
+                map.entities.push(pin);
+            }
         }
     )
 }
