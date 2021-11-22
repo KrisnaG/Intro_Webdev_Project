@@ -153,18 +153,19 @@ function getSpeciesImage(data) {
     }
 }
 
+// 
 function getSpeciesInformation(data) {
-    // If no accepted name exists
+    // If accepted name does not exists
     if(data.AcceptedCommonName == undefined) {
         document.getElementById("name-info").innerHTML = data.ScientificName;
     } else {
         document.getElementById("name-info").innerHTML = data.AcceptedCommonName;
     }
-    // If alternate names exists
+    // If alternate names do not exists
     if(data.AlternateCommonName == undefined) {
         document.getElementById("common-info").innerHTML = "Not Available"
     } else {
-        // 
+        // If multiple or single alternate names exist
         if(!Array.isArray(data.AlternateCommonName)) {
             document.getElementById("common-info").innerHTML = data.AlternateCommonName;
         } else {
@@ -182,25 +183,23 @@ function getSpeciesInformation(data) {
     document.getElementById("pest-info").innerHTML = data.PestStatus;
 }
 
-// 
+// Load map positioned over Queensland
 function getMap() {
     var map = new Microsoft.Maps.Map('#map', {
         credentials: 'AqKDsL6GDv9NorZbPm-i7lwPtfY-DF2Pwdv4mvXBKvPmxJ85KpeQZ5DXYAi_OY1R',
         center: new Microsoft.Maps.Location(-22.797874359286126, 144.3006533179762),
         mapTypeId: Microsoft.Maps.MapTypeId.aerial,
-        zoom: 4.8
+        zoom: 4.9
     });
-
     return map;
 }
 
-// 
+// Gets species sighting locations and pins it to map
 async function pinMap(id) {
     fetchInformation(SURVEY_URL + id).then(
         function(data) {
             var map = getMap();
-
-            // add pins
+            // add pins for each location
             for(position of data.features) {
                 var loc = new Microsoft.Maps.Location(position.geometry.coordinates[1], position.geometry.coordinates[0]);
                 var pin = new Microsoft.Maps.Pushpin(loc);

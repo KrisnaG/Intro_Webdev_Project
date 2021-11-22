@@ -52,7 +52,7 @@ h2{
 }
 
 .panel{
-    width: 30%;
+    width: 40%;
     height: auto;
     margin: auto;
     margin-bottom: 3em;
@@ -93,8 +93,9 @@ h2{
     text-align: justify;
 }
 
+
 #map{
     position: relative;
-    width: 550px;
+    width: 650px;
     height: 400px;
 }
